@@ -1,0 +1,220 @@
+maven: build tool :
+
+
+Practice Example: Create a Simple Maven Project
+Step 1: Prepare Your Environment
+Ensure Java and Maven are installed:
+
+bash
+Copy code
+java -version
+mvn -version
+Create a directory for your project:
+
+bash
+Copy code
+mkdir my-maven-project
+cd my-maven-project
+Step 2: Create a New Maven Project
+Run the following command to generate a new project using Maven’s archetype:
+
+bash
+Copy code
+mvn archetype:generate \
+  -DgroupId=com.example.maventutorial \
+  -DartifactId=my-maven-app \
+  -DarchetypeArtifactId=maven-archetype-quickstart \
+  -DinteractiveMode=false
+groupId: The package name for your project (e.g., com.example.maventutorial).
+artifactId: The name of your project (e.g., my-maven-app).
+archetypeArtifactId: Template to generate the project (quickstart is ideal for beginners).
+Navigate to the project directory:
+
+bash
+Copy code
+cd my-maven-app
+Step 3: Understand the Project Structure
+View the generated structure using:
+
+bash
+Copy code
+tree .
+Output:
+
+css
+Copy code
+my-maven-app/
+├── pom.xml
+├── src
+│   ├── main
+│   │   └── java
+│   │       └── com
+│   │           └── example
+│   │               └── maventutorial
+│   │                   └── App.java
+│   └── test
+│       └── java
+│           └── com
+│               └── example
+│                   └── maventutorial
+│                       └── AppTest.java
+Step 4: Edit the App.java File
+Open the main application file:
+
+bash
+Copy code
+nano src/main/java/com/example/maventutorial/App.java
+Modify the code to print a custom message:
+
+java
+Copy code
+package com.example.maventutorial;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello, Maven Build Tool!");
+    }
+}
+Step 5: Compile the Project
+Run the following command to compile the project:
+
+bash
+Copy code
+mvn compile
+What Happens:
+Maven checks for dependencies and downloads them.
+Compiles the source code under src/main/java.
+Step 6: Run Unit Tests
+The project includes a sample unit test (AppTest.java):
+
+java
+Copy code
+package com.example.maventutorial;
+
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+
+public class AppTest {
+    @Test
+    public void testApp() {
+        assertTrue(true);
+    }
+}
+Run the tests:
+
+bash
+Copy code
+mvn test
+What Happens:
+Maven runs the tests under src/test/java using JUnit.
+Results are shown in the terminal.
+Step 7: Package the Application
+Build the project and create a JAR file:
+
+bash
+Copy code
+mvn package
+What Happens:
+Compiles the code.
+Packages it into a JAR file in the target/ directory:
+bash
+Copy code
+target/my-maven-app-1.0-SNAPSHOT.jar
+Step 8: Run the Packaged Application
+Execute the JAR file:
+
+bash
+Copy code
+java -cp target/my-maven-app-1.0-SNAPSHOT.jar com.example.maventutorial.App
+Output:
+
+Copy code
+Hello, Maven Build Tool!
+Step 9: Modify the pom.xml File
+Let’s add a dependency and a plugin.
+
+Add a Dependency
+Edit pom.xml:
+
+bash
+Copy code
+nano pom.xml
+Add a dependency for JSON processing:
+
+xml
+Copy code
+<dependencies>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.15.0</version>
+    </dependency>
+</dependencies>
+Add a Plugin
+Add a plugin to build an executable JAR:
+
+xml
+Copy code
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.4.0</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>com.example.maventutorial.App</mainClass>
+                    </manifest>
+                </archive>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+Step 10: Rebuild the Project
+Clean and rebuild the project:
+
+bash
+Copy code
+mvn clean package
+Result:
+A new JAR file is created with all dependencies:
+bash
+Copy code
+target/my-maven-app-1.0-SNAPSHOT-jar-with-dependencies.jar
+Step 11: Run the New JAR
+Run the new JAR file:
+
+bash
+Copy code
+java -jar target/my-maven-app-1.0-SNAPSHOT-jar-with-dependencies.jar
+Output:
+
+Copy code
+Hello, Maven Build Tool!
+Step 12: Clean the Project
+Clean the project to remove compiled files and artifacts:
+
+bash
+Copy code
+mvn clean
+Key Maven Concepts Learned
+Archetypes: Quickly generate project templates.
+Dependencies: Add libraries to your project.
+Build Phases:
+compile: Compile the code.
+test: Run unit tests.
+package: Create JAR/WAR files.
+Plugins: Extend Maven functionality (e.g., assembly plugin).
+Lifecycle: clean, compile, test, package.
